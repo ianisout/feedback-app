@@ -1,39 +1,74 @@
-import { v4 as uuidv4 } from 'uuid';
-import { createContext, useState } from 'react';
+import { createContext, useState, useEffect } from 'react';
 
 const FeedbackContext = createContext();
 
 export const FeedbackProvider = ({ children }) => {
-  const [feedback, setFeedback] = useState([
-    {
-      id: 1,
-      text: "Terrible. I'm afraid he's Hitler's reincarnation",
-      rating: 1,
-    },
-    {
-      id: 2,
-      text: "She's in a good mood today, so, a hard 4. Most days she doesn't go past 2.",
-      rating: 4,
-    },
-  ]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [feedback, setFeedback] = useState([]);
+  const [feedbackEdit, setFeedbackEdit] = useState({
+    item: {},
+    edit: false,
+  });
 
-  const addFeedback = (newFeedback) => {
-    newFeedback.id = uuidv4();
-    setFeedback([newFeedback, ...feedback]);
+  useEffect(() => {
+    fetchFeedback();
+  }, []);
+
+  const fetchFeedback = async () => {
+    const response = await fetch(`http://localhost:3001/feedback`);
+    const data = await response.json();
+
+    setFeedback(data);
+    setIsLoading(false);
+  };
+
+  const addFeedback = async (newFeedback) => {
+    const response = await fetch(`http://localhost:3001/feedback`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(newFeedback),
+    });
+
+    const data = await response.json();
+
+    setFeedback([data, ...feedback]);
   };
 
   const deleteFeedback = (id) => {
-    if (window.confirm('Are you sure you want to delete this feedback?')) {
+    if (
+      window.confirm(
+        'Are you sure you want to delete this feedback? Are you the cat reading this?'
+      )
+    ) {
       setFeedback(feedback.filter((item) => item.id !== id));
     }
+  };
+
+  const updateFeedback = (id, updItem) => {
+    setFeedback(
+      feedback.map((item) => (item.id === id ? { ...item, ...updItem } : item))
+    );
+  };
+
+  const editFeedback = (item) => {
+    setFeedbackEdit({
+      item,
+      edit: true,
+    });
   };
 
   return (
     <FeedbackContext.Provider
       value={{
         feedback: feedback, // not shorthanded for clearance
+        feedbackEdit, // actual state of feedbackEdit that holds item and boolean
+        isLoading,
         addFeedback,
         deleteFeedback,
+        editFeedback, // function that runs when edit button is clicked
+        updateFeedback,
       }}
     >
       {children}
@@ -41,4 +76,4 @@ export const FeedbackProvider = ({ children }) => {
   );
 };
 
-export default FeedbackContext
+export default FeedbackContext;

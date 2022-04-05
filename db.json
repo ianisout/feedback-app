@@ -1,0 +1,19 @@
+{
+  "feedback": [
+    {
+      "id": 1,
+      "text": "Terrible. I'm afraid he's Hitler's reincarnation",
+      "rating": 1
+    },
+    {
+      "id": 2,
+      "text": "She's in a good mood today, so, a hard 4. Most days she doesn't go past 2.",
+      "rating": 4
+    },
+    {
+      "id": 3,
+      "text": "Most amazing cat in the world! (It's looking at me menacingly, pls send help)",
+      "rating": 10
+    }
+  ]
+}
