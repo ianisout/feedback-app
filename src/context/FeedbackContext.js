@@ -4,6 +4,7 @@ import { createContext, useState, useEffect } from 'react';
 const FeedbackContext = createContext();
 
 export const FeedbackProvider = ({ children }) => {
+  const [isLoading, setIsLoading] = useState(true);
   const [feedback, setFeedback] = useState([]);
   const [feedbackEdit, setFeedbackEdit] = useState({
     item: {},
@@ -19,6 +20,7 @@ export const FeedbackProvider = ({ children }) => {
     const data = await response.json();
 
     setFeedback(data);
+    setIsLoading(false);
   };
 
   const addFeedback = (newFeedback) => {
@@ -54,6 +56,7 @@ export const FeedbackProvider = ({ children }) => {
       value={{
         feedback: feedback, // not shorthanded for clearance
         feedbackEdit, // actual state of feedbackEdit that holds item and boolean
+        isLoading,
         addFeedback,
         deleteFeedback,
         editFeedback, // function that runs when edit button is clicked
