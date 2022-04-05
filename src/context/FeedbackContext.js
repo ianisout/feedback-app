@@ -36,19 +36,32 @@ export const FeedbackProvider = ({ children }) => {
     setFeedback([data, ...feedback]);
   };
 
-  const deleteFeedback = (id) => {
+  const deleteFeedback = async (id) => {
     if (
       window.confirm(
         'Are you sure you want to delete this feedback? Are you the cat reading this?'
       )
     ) {
+      await fetch(`http://localhost:3001/feedback/${id}`, {
+        method: 'DELETE',
+      });
       setFeedback(feedback.filter((item) => item.id !== id));
     }
   };
 
-  const updateFeedback = (id, updItem) => {
+  const updateFeedback = async (id, updItem) => {
+    const response = await fetch(`http://localhost:3001/feedback/${id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(updItem),
+    });
+
+    const data = await response.json();
+
     setFeedback(
-      feedback.map((item) => (item.id === id ? { ...item, ...updItem } : item))
+      feedback.map((item) => (item.id === id ? { ...item, ...data } : item))
     );
   };
 
