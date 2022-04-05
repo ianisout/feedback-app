@@ -15,6 +15,11 @@ export const FeedbackProvider = ({ children }) => {
       text: "She's in a good mood today, so, a hard 4. Most days she doesn't go past 2.",
       rating: 4,
     },
+    {
+      id: 3,
+      text: "Most amazing cat in the world! (It's looking at me menacingly, pls send help)",
+      rating: 10,
+    },
   ]);
 
   const [feedbackEdit, setFeedbackEdit] = useState({
@@ -28,7 +33,7 @@ export const FeedbackProvider = ({ children }) => {
   };
 
   const deleteFeedback = (id) => {
-    if (window.confirm('Are you sure you want to delete this feedback?')) {
+    if (window.confirm('Are you sure you want to delete this feedback? Are you the cat reading this?')) {
       setFeedback(feedback.filter((item) => item.id !== id));
     }
   };
