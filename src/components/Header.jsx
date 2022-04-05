@@ -9,7 +9,7 @@ function Header({ text, bgColor, textColor }) {
   return (
     <header style={headerStyles}>
       <div className="container">
-        <h2><span className='crossed-out'>Feedback</span> Feedyourcat UI</h2>
+        <h2><span className='crossed-out'>Feedback</span> FeedYourCat UI</h2>
       </div>
     </header>
   )
